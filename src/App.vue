@@ -1,15 +1,9 @@
 <template>
-  <div>
-    <container />
-  </div>
+  <router-view />
 </template>
 
 <script>
-import Container from "@/components/container/index.vue";
 export default {
-  components: {
-    Container,
-  },
   setup() {
     return {};
   },
@@ -22,9 +16,18 @@ export default {
   padding: 0;
   /* color: "white"; */
 }
+#app {
+  height: 100%;
+  width: 100%;
+}
 html,
 body {
   height: 100%;
   width: 100%;
+}
+
+svg {
+  height: 1em;
+  width: 1em;
 }
 </style>
