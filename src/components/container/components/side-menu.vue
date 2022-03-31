@@ -1,10 +1,10 @@
 <template>
-  <el-menu :collapse="isFold" class="el-menu-vertical-demo">
-    <el-menu-item index="1">
+  <el-menu router :collapse="isFold" class="el-menu-vertical-demo">
+    <el-menu-item :route="{ path: '/icon-selector' }" index="1">
       <el-icon>
         <i-setting />
       </el-icon>
-      <span>Navigator Four</span>
+      <span>图标选择器</span>
     </el-menu-item>
   </el-menu>
 </template>

@@ -1,11 +1,20 @@
-import { createRouter, createMemoryHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
-import Container from "../components/container/index.vue";
-
-const routes = [{ path: "/", component: Container }];
+const routes = [
+  {
+    path: "/",
+    component: () => import("@/components/container/index.vue"),
+    children: [
+      {
+        path: "/icon-selector",
+        component: () => import("@/views/icon-selector/index.vue"),
+      },
+    ],
+  },
+];
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 });
 
