@@ -9,6 +9,10 @@ const routes = [
         path: "/icon-selector",
         component: () => import("@/views/icon-selector/index.vue"),
       },
+      {
+        path: "/city-chooser",
+        component: () => import("@/views/city-chooser/index.vue"),
+      },
     ],
   },
 ];

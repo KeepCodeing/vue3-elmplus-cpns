@@ -6,6 +6,12 @@
       </el-icon>
       <span>图标选择器</span>
     </el-menu-item>
+    <el-menu-item :route="{ path: '/city-chooser' }" index="2">
+      <el-icon>
+        <i-setting />
+      </el-icon>
+      <span>城市选择器</span>
+    </el-menu-item>
   </el-menu>
 </template>
 

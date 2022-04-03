@@ -8,7 +8,7 @@
         <el-header>
           <nav-header @click="changeFold" />
         </el-header>
-        <el-main>
+        <el-main id="main">
           <router-view />
         </el-main>
       </el-container>
