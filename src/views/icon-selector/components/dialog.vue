@@ -1,21 +1,26 @@
 <template>
-  <div>
+  <div class="my_overload_css">
     <el-dialog
       v-model="dialogVisible"
-      @close="$emit('changeVisible', false)"
+      @close="closeDialog"
       :title="title"
       width="30%"
+      :lock-scroll="false"
     >
       <dir class="icon-container">
-        <div class="icon-item" v-for="icon in Object.keys(ElIcons)" :key="icon">
+        <div
+          class="icon-item"
+          @click="copyIcon(icon)"
+          v-for="icon in Object.keys(ElIcons)"
+          :key="icon"
+        >
           <el-icon :size="30"> <component :is="format(icon)" /></el-icon>
           <p class="text">{{ format(icon) }}</p>
         </div>
       </dir>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="$emit('changeVisible', false)">Cancel</el-button>
-          <!-- <el-button type="primary" v-on="$attrs">Confirm</el-button> -->
+          <el-button @click="closeDialog">取消</el-button>
         </span>
       </template>
     </el-dialog>
@@ -25,8 +30,10 @@
 <script>
 import * as ElIcons from "@element-plus/icons-vue";
 import { format } from "@/utils/formatCamel";
+import { useCopy } from "@/hooks/useCopy";
 
 export default {
+  emits: ["changeVisible"],
   props: {
     dialogVisible: {
       type: Boolean,
@@ -39,10 +46,19 @@ export default {
       default: "",
     },
   },
-  setup() {
+  setup(props, { emit }) {
+    const closeDialog = () => emit("changeVisible", false);
+
+    const copyIcon = (icon) => {
+      useCopy(format(icon));
+      closeDialog();
+    };
+
     return {
       ElIcons,
       format,
+      closeDialog,
+      copyIcon,
     };
   },
 };

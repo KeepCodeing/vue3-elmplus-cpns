@@ -11,47 +11,6 @@ export default {
 </script>
 
 <style lang="scss">
-* {
-  margin: 0;
-  padding: 0;
-  /* color: "white"; */
-}
-#app {
-  height: 100%;
-  width: 100%;
-}
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
-
-svg {
-  height: 1em;
-  width: 1em;
-}
-
-::-webkit-scrollbar {
-  width: 7px;
-  height: 5px;
-  border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
-::-webkit-scrollbar-track-piece {
-  background-color: #ffff;
-  border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
-::-webkit-scrollbar-thumb:vertical {
-  height: 5px;
-  background-color: rgba(144, 147, 153, 0.5);
-  border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
-::-webkit-scrollbar-thumb:horizontal {
-  width: 7px;
-  background-color: rgba(144, 147, 153, 0.5);
-  border-radius: 15px;
-  -webkit-border-radius: 15px;
-}
+@import "./assets/style/base.scss";
+@import "./assets/style/overload.scss";
 </style>
