@@ -30,6 +30,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "notification",
+        component: () => import("@/views/notification/index.vue"),
+        meta: {
+          title: "通知组件",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
