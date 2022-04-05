@@ -1,15 +1,13 @@
 <template>
-  <el-menu
-    router
-    default-active="0"
-    :collapse="isFold"
-    class="el-menu-vertical-demo"
-  >
+  <el-menu router :collapse="isFold" class="el-menu-vertical-demo">
     <el-menu-item
       v-for="(item, idx) in routes"
       :key="item.path"
       :route="{ path: item.path }"
       :index="idx + ''"
+      :class="{
+        'is-active': $router.currentRoute.value.path.includes(item.path),
+      }"
     >
       <el-icon>
         <component :is="item.meta.icon" />
@@ -33,6 +31,7 @@ export default {
   setup() {
     return {
       routes: routes[0].children,
+      log: console.log,
     };
   },
 };
