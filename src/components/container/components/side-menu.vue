@@ -1,21 +1,26 @@
 <template>
-  <el-menu router :collapse="isFold" class="el-menu-vertical-demo">
-    <el-menu-item :route="{ path: '/icon-selector' }" index="1">
+  <el-menu
+    router
+    default-active="0"
+    :collapse="isFold"
+    class="el-menu-vertical-demo"
+  >
+    <el-menu-item
+      v-for="(item, idx) in routes"
+      :key="item.path"
+      :route="{ path: item.path }"
+      :index="idx + ''"
+    >
       <el-icon>
-        <i-setting />
+        <component :is="item.meta.icon" />
       </el-icon>
-      <span>图标选择器</span>
-    </el-menu-item>
-    <el-menu-item :route="{ path: '/city-chooser' }" index="2">
-      <el-icon>
-        <i-setting />
-      </el-icon>
-      <span>城市选择器</span>
+      <span>{{ item.meta.title }}</span>
     </el-menu-item>
   </el-menu>
 </template>
 
 <script>
+import { routes } from "@/router";
 export default {
   components: {},
   props: {
@@ -26,7 +31,9 @@ export default {
     },
   },
   setup() {
-    return {};
+    return {
+      routes: routes[0].children,
+    };
   },
 };
 </script>
