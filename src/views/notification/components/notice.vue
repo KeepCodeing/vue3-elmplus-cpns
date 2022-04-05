@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-popover placement="bottom" title="Title" :width="200" trigger="click">
+    <el-popover popper-class="popover" placement="bottom" trigger="click">
       <template #default>
-        <slot></slot>
+        <slot name="content"></slot>
       </template>
       <template #reference>
         <el-badge v-bind="badgeConfig" class="item">
@@ -33,5 +33,21 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.popover {
+  padding: 0 !important;
+  width: 400px !important;
+}
+
+.el-tabs__nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.el-tabs__item {
+  flex: 1;
+  padding: 0;
+  text-align: center;
+}
 </style>

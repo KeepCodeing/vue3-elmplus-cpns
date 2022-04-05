@@ -7,17 +7,19 @@
       width="30%"
       :lock-scroll="false"
     >
-      <dir class="icon-container">
+      <div class="icon-container">
         <div
           class="icon-item"
           @click="copyIcon(icon)"
           v-for="icon in Object.keys(ElIcons)"
           :key="icon"
         >
-          <el-icon :size="30"> <component :is="format(icon)" /></el-icon>
+          <el-icon :size="30">
+            <component :is="format(icon)" />
+          </el-icon>
           <p class="text">{{ format(icon) }}</p>
         </div>
-      </dir>
+      </div>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="closeDialog">取消</el-button>
