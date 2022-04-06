@@ -38,6 +38,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "menu",
+        component: () => import("@/views/menu/index.vue"),
+        meta: {
+          title: "菜单组件",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
