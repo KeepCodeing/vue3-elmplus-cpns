@@ -46,6 +46,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "progress",
+        component: () => import("@/views/progress/index.vue"),
+        meta: {
+          title: "进度条组件",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
