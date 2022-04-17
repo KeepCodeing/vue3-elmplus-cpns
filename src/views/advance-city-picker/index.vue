@@ -1,10 +1,14 @@
 <template>
   <div>
-    <el-popover placement="bottom" @show="visible = true" @hide="visible = false" :width="650" trigger="click">
+    <el-popover placement="bottom" v-model:visible="visible" @show="visible = true" @hide="visible = false" :width="650"
+      trigger="click">
       <template #reference>
-        <el-icon :class="{ 'rotate-icon-up': visible, 'rotate-icon-down': !visible }">
-          <i-arrow-down-bold />
-        </el-icon>
+        <div @click="visible = !visible">
+          <span style="margin-right: 10px;">{{ choosedCity }}</span>
+          <el-icon :class="{ 'rotate-icon-up': visible, 'rotate-icon-down': !visible }">
+            <i-arrow-down-bold />
+          </el-icon>
+        </div>
       </template>
       <template #default>
         <el-row>
@@ -23,16 +27,17 @@
         <el-row style="margin-top: 20px;" :gutter="10">
           <el-col style="text-align: center; margin: 5px 0;" :span="2" v-for="city in cityList.city"
             :key="city.initial">
-            <el-button>{{ city.initial }} </el-button>
+            <el-button @click="scrollToAlpha(city.initial)">{{ city.initial }} </el-button>
           </el-col>
         </el-row>
         <el-scrollbar max-height="500px">
           <el-row style="margin: 20px 0;" v-for="city in cityList.city" :key="city.initial">
-            <el-col :span="2">{{ city.initial }}: </el-col>
+            <el-col :span="2"><span :id="city.initial">{{ city.initial }}: </span></el-col>
             <el-col :span="22">
               <el-row>
-                <el-col style="margin: 0 0 10px 0;" :span="3" v-for="item in city.list" :key="item.code">
-                  <span>{{ item.name }}</span>
+                <el-col style="margin: 0 0 10px 0;" :span="3" @click="handleCityClick(item.name)"
+                  v-for="item in city.list" :key="item.code">
+                  <span style="cursor: pointer;">{{ item.name }}</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -53,10 +58,23 @@ import cityList from './city.json';
 export default {
   setup() {
     const visible = ref(false);
+    const choosedCity = ref("请选择");
+
+    const handleCityClick = (city) => {
+      choosedCity.value = city;
+      visible.value = false;
+    }
+
+    const scrollToAlpha = (alpha) => {
+      document.getElementById(alpha).scrollIntoView();
+    }
 
     return {
       visible,
       cityList,
+      choosedCity,
+      handleCityClick,
+      scrollToAlpha
     }
   }
 }
