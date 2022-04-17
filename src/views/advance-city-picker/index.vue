@@ -4,7 +4,7 @@
       trigger="click">
       <template #reference>
         <div @click="visible = !visible">
-          <span style="margin-right: 10px;">{{ choosedCity }}</span>
+          <span style="margin-right: 10px;">{{ choosedCity || '请选择:' }}</span>
           <el-icon :class="{ 'rotate-icon-up': visible, 'rotate-icon-down': !visible }">
             <i-arrow-down-bold />
           </el-icon>
@@ -19,8 +19,10 @@
             <el-button style="width: 100%;">按省份</el-button>
           </el-col>
           <el-col :span="13" :offset="1">
-            <el-select style="width: 100%;" placeholder="请选择">
-              <el-option></el-option>
+            <el-select style="width: 100%;" placeholder="请选择" v-model="choosedCity" filterable
+              :filter-method="filterCity">
+              <el-option v-for="(city, idx) in options" :key="city.code + city.pinyin + idx" :label="city.name"
+                :value="city.name" />
             </el-select>
           </el-col>
         </el-row>
@@ -53,12 +55,15 @@
 // 首字母分类城市，用户点击后使用弹出层显示城市列表，用户可以通过点击城市名称选择城市
 // 总体来说难度不大，不过用到的东西会更多
 // 这前面还有时间日期的组件，因为太简单所以鸽了...
-import { ref } from 'vue';
+
+// 坑：select的筛选是会更改VNode的，如果key不是唯一的，那么筛选也会有问题（所以这里的key写成了一坨屎）
+
+import { reactive, ref } from 'vue';
 import cityList from './city.json';
 export default {
   setup() {
     const visible = ref(false);
-    const choosedCity = ref("请选择");
+    const choosedCity = ref(null);
 
     const handleCityClick = (city) => {
       choosedCity.value = city;
@@ -69,12 +74,21 @@ export default {
       document.getElementById(alpha).scrollIntoView();
     }
 
+    const flatCityList = cityList.city.map((item) => item.list).flat(Infinity);
+    const options = ref([...flatCityList]);
+
+    const filterCity = (cityItem) => {
+      options.value = flatCityList.filter((item) => (item.name.includes(cityItem) || item.pinyin.includes(cityItem)));
+    }
+
     return {
       visible,
       cityList,
       choosedCity,
       handleCityClick,
-      scrollToAlpha
+      scrollToAlpha,
+      options,
+      filterCity
     }
   }
 }
