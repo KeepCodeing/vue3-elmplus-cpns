@@ -54,6 +54,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "city-picker",
+        component: () => import("@/views/advance-city-picker/index.vue"),
+        meta: {
+          title: "城市选择器",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
