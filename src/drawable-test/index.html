@@ -1,0 +1,96 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #select-box {
+        width: 0;
+        height: 0;
+        border: 1px dashed black;
+        position: absolute;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="select-box"></div>
+    <div>
+      <div>
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+      </div>
+      <div>
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+      </div>
+      <div>
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+      </div>
+      <div>
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+        <input type="checkbox" />
+      </div>
+    </div>
+    <script>
+      let startX, startY, endX, endY;
+      const box = document.querySelector("#select-box");
+      const checkBoxs = document.querySelectorAll("input[type=checkbox]");
+
+      const mouseMove = (event) => {
+        const bLeft = Math.min(event.clientX, startX);
+        const bTop = Math.min(event.clientY, startY);
+        const bWidth = Math.abs(event.clientX - startX);
+        const bHeight = Math.abs(event.clientY - startY);
+        const bRight = bLeft + bWidth;
+        const bBottom = bTop + bHeight;
+
+        box.style.left = `${bLeft}px`;
+        box.style.top = `${bTop}px`;
+        box.style.width = `${bWidth}px`;
+        box.style.height = `${bHeight}px`;
+
+        box.style.display = "block";
+
+        checkBoxs.forEach((checkBox) => {
+          const checkBoxLeft = checkBox.getBoundingClientRect().left;
+          const checkBoxTop = checkBox.getBoundingClientRect().top;
+          const checkBoxRight = checkBox.getBoundingClientRect().right;
+          const checkBoxBottom = checkBox.getBoundingClientRect().bottom;
+
+          checkBox.checked =
+            bLeft <= checkBoxRight &&
+            bTop <= checkBoxBottom &&
+            bRight >= checkBoxLeft &&
+            bBottom >= checkBoxTop;
+        });
+
+        console.log(event.clientX, event.clientY);
+      };
+      const mouseUp = (event) => {
+        endX = event.clientX;
+        endY = event.clientY;
+        box.style.display = "none";
+        document.body.removeEventListener("mousemove", mouseMove);
+        document.body.removeEventListener("mouseup", mouseUp);
+      };
+      const mouseDown = (event) => {
+        startX = event.clientX;
+        startY = event.clientY;
+        document.body.addEventListener("mousemove", mouseMove);
+        document.body.addEventListener("mouseup", mouseUp);
+      };
+      document.body.addEventListener("mousedown", mouseDown);
+    </script>
+  </body>
+</html>
