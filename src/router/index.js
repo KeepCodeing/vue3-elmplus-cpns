@@ -62,6 +62,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "advance-table",
+        component: () => import("@/components/advance-table/index.jsx"),
+        meta: {
+          title: "高级表格",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
