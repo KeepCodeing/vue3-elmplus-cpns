@@ -54,11 +54,9 @@ export default defineComponent({
     // 驼峰转kabake？风格
     // 这里table和下面的column都是通用配置，也就是最好不要写
     // label/prop之类的属性
-
-    // TODO: 将参数改为tb-prop的形式，这样只用一次转换
     const trasformAttrs = (props, cmpAttrs) => {
       Object.keys(props).forEach((key) => {
-        // console.log(key in props);
+        console.log(key in props);
         if (key === "className" || key === "width" || key === "data") return;
         let tKey = camel2Kabake(key);
         if (attrs[tKey]) cmpAttrs[tKey] = attrs[tKey];
@@ -70,17 +68,18 @@ export default defineComponent({
     trasformAttrs(ElPagination.props, pagAttrs);
 
     const renderColumn = (column) =>
-      props.columnConfig.map((config) => {
-        const slots = config.slot
-          ? { default: (scope) => config.slot(scope) }
+      props.columnConfig.map((config, idx) => {
+        const hasSlot = config.slot
+          ? { __: (scope) => config.slot(scope) }
           : {};
         return (
           <ElTableColumn
             show-overflow-tooltip
-            {...{ ...columnAttrs, ...config }}
-            // 注意这里插槽的用法...
-            v-slots={slots}
-          ></ElTableColumn>
+            {...{ ...columnAttrs, ...config, ...hasSlot }}
+          >
+            {/* 取出当前列，没有发现作用域插槽的用法，所以直接用data */}
+            {/* {config.slot?.(props.data[idx][config.prop])} */}
+          </ElTableColumn>
         );
       });
 

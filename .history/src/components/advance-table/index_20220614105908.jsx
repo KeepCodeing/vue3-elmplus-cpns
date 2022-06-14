@@ -32,14 +32,9 @@ export default defineComponent({
       {
         prop: "address",
         label: "地址",
-        slot: ({ row, column, $index }) => {
-          console.log({ row, column, $index });
-          return (
-            <span>
-              {row.address}
-              {$index}
-            </span>
-          );
+        slot: (data) => {
+          console.log(data);
+          return <span>{data.address}</span>;
         },
       },
     ];

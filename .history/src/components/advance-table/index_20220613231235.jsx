@@ -29,19 +29,7 @@ export default defineComponent({
     const columnConfig = [
       { prop: "date", label: "日期" },
       { prop: "name", label: "姓名" },
-      {
-        prop: "address",
-        label: "地址",
-        slot: ({ row, column, $index }) => {
-          console.log({ row, column, $index });
-          return (
-            <span>
-              {row.address}
-              {$index}
-            </span>
-          );
-        },
-      },
+      { prop: "address", label: "地址" },
     ];
 
     // const slots = {

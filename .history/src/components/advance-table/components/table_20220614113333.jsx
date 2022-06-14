@@ -77,7 +77,7 @@ export default defineComponent({
         return (
           <ElTableColumn
             show-overflow-tooltip
-            {...{ ...columnAttrs, ...config }}
+            {...{ ...columnAttrs, ...config, ...hasSlot }}
             // 注意这里插槽的用法...
             v-slots={slots}
           ></ElTableColumn>

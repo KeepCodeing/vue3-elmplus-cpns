@@ -29,9 +29,7 @@ export default defineComponent({
     },
     data: {
       type: Array,
-      default: function () {
-        return [];
-      },
+      default: () => [],
     },
   },
   setup(props, { slots }) {
@@ -49,17 +47,14 @@ export default defineComponent({
 
     // vue-jsx里的插槽实际上就是外部传递过来的一个对象，包含
     // 若干个插槽内容渲染方法，不过得写成v-slots形式
-    // console.log(slots);
+    console.log(slots);
 
     // 驼峰转kabake？风格
     // 这里table和下面的column都是通用配置，也就是最好不要写
     // label/prop之类的属性
-
-    // TODO: 将参数改为tb-prop的形式，这样只用一次转换
     const trasformAttrs = (props, cmpAttrs) => {
       Object.keys(props).forEach((key) => {
-        // console.log(key in props);
-        if (key === "className" || key === "width" || key === "data") return;
+        if (key === "className" || key === "width") return;
         let tKey = camel2Kabake(key);
         if (attrs[tKey]) cmpAttrs[tKey] = attrs[tKey];
       });
@@ -69,25 +64,19 @@ export default defineComponent({
     trasformAttrs(ElTableColumn.props, columnAttrs);
     trasformAttrs(ElPagination.props, pagAttrs);
 
+    console.log(props.data);
     const renderColumn = (column) =>
-      props.columnConfig.map((config) => {
-        const slots = config.slot
-          ? { default: (scope) => config.slot(scope) }
-          : {};
-        return (
-          <ElTableColumn
-            show-overflow-tooltip
-            {...{ ...columnAttrs, ...config }}
-            // 注意这里插槽的用法...
-            v-slots={slots}
-          ></ElTableColumn>
-        );
-      });
+      props.columnConfig.map((config, idx) => (
+        <ElTableColumn show-overflow-tooltip {...{ ...columnAttrs, ...config }}>
+          {/* 取出当前列，没有发现作用域插槽的用法，所以直接用data */}
+          {config.slot?.(props.data[idx][config.prop])}
+        </ElTableColumn>
+      ));
 
     const renderPagination = (column) =>
       props.usePagination && <Pagination {...pagAttrs} />;
 
-    // console.log(props);
+    console.log(props);
 
     // 渲染编辑列，提供默认编辑列，包含编辑/删除两个个选项
     // 同时提供插槽版，优先使用插槽版
@@ -117,7 +106,7 @@ export default defineComponent({
 
     return () => (
       <>
-        <ElTable {...tableAttrs} data={props.data}>
+        <ElTable {...tableAttrs}>
           {renderColumn()}
           {renderEditRow()}
         </ElTable>

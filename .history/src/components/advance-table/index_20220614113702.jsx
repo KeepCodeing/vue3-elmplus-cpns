@@ -34,12 +34,7 @@ export default defineComponent({
         label: "地址",
         slot: ({ row, column, $index }) => {
           console.log({ row, column, $index });
-          return (
-            <span>
-              {row.address}
-              {$index}
-            </span>
-          );
+          return <span>{row.address}</span>;
         },
       },
     ];

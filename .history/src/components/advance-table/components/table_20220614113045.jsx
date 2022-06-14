@@ -69,18 +69,23 @@ export default defineComponent({
     trasformAttrs(ElTableColumn.props, columnAttrs);
     trasformAttrs(ElPagination.props, pagAttrs);
 
+    console.log(ElTableColumn.slots);
+
     const renderColumn = (column) =>
       props.columnConfig.map((config) => {
-        const slots = config.slot
-          ? { default: (scope) => config.slot(scope) }
+        const hasSlot = config.slot
+          ? { __: (scope) => config.slot(scope) }
           : {};
+        console.log(hasSlot);
         return (
           <ElTableColumn
             show-overflow-tooltip
-            {...{ ...columnAttrs, ...config }}
-            // 注意这里插槽的用法...
-            v-slots={slots}
-          ></ElTableColumn>
+            {...{ ...columnAttrs, ...config, ...hasSlot }}
+            default={(scope) => console.log(scope)}
+          >
+            {/* 取出当前列，没有发现作用域插槽的用法，所以直接用data */}
+            {/* {config.slot?.(props.data[idx][config.prop])} */}
+          </ElTableColumn>
         );
       });
 
