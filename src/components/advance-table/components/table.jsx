@@ -87,7 +87,10 @@ export default defineComponent({
     const renderPagination = (column) =>
       props.usePagination && <Pagination {...pagAttrs} />;
 
-    // console.log(props);
+    // 编辑对话框
+    const showEditDialog = ({ row, column, $index }, config) => {
+      console.log(config);
+    };
 
     // 渲染编辑列，提供默认编辑列，包含编辑/删除两个个选项
     // 同时提供插槽版，优先使用插槽版
@@ -95,20 +98,36 @@ export default defineComponent({
       if (slots.editRow) {
         return (
           <ElTableColumn
-            label={props.editRowConfig.title || "编辑"}
+            label={props.editRowConfig.title || "标题"}
             fixed={props.editRowConfig.fixed || "right"}
-          >
-            {slots.editRow()};
-          </ElTableColumn>
+            v-slots={{
+              default: (scope) => slots.editRow(scope),
+            }}
+          ></ElTableColumn>
         );
       }
 
       if (props.editRowConfig.useDefault) {
         return (
-          <ElTableColumn label={"编辑"} fixed={"right"}>
-            <ElButton type="text">编辑</ElButton>
-            <ElButton type="text">删除</ElButton>
-          </ElTableColumn>
+          <ElTableColumn
+            v-slots={{
+              default: (outterScope) => (
+                <>
+                  <ElButton
+                    type="text"
+                    onClick={() =>
+                      showEditDialog(outterScope, props.columnConfig)
+                    }
+                  >
+                    编辑
+                  </ElButton>
+                  <ElButton type="text">删除</ElButton>
+                </>
+              ),
+            }}
+            label={"编辑"}
+            fixed={"right"}
+          ></ElTableColumn>
         );
       }
 
