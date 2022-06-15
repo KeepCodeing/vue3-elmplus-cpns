@@ -1,8 +1,11 @@
-import { defineComponent, useAttrs } from "vue";
+import { defineComponent, useAttrs, inject } from "vue";
 import { ElTable, ElTableColumn, ElPagination, ElButton } from "element-plus";
 import { camel2Kabake } from "../../../utils/formatCamel";
 
+import eventBus from "../../../utils/eventBus";
+
 import Pagination from "./pagination";
+import Dialog from "./dialog";
 
 export default defineComponent({
   props: {
@@ -47,6 +50,8 @@ export default defineComponent({
     const columnAttrs = {};
     const pagAttrs = {};
 
+    const eventBus = inject("eventBus");
+
     // vue-jsx里的插槽实际上就是外部传递过来的一个对象，包含
     // 若干个插槽内容渲染方法，不过得写成v-slots形式
     // console.log(slots);
@@ -89,7 +94,7 @@ export default defineComponent({
 
     // 编辑对话框
     const showEditDialog = ({ row, column, $index }, config) => {
-      console.log(config);
+      eventBus.emit("show-dialog", { row, config });
     };
 
     // 渲染编辑列，提供默认编辑列，包含编辑/删除两个个选项
@@ -134,6 +139,10 @@ export default defineComponent({
       return null;
     };
 
+    const renderDialog = (column) => {
+      return <Dialog />;
+    };
+
     return () => (
       <>
         <ElTable {...tableAttrs} data={props.data}>
@@ -141,6 +150,7 @@ export default defineComponent({
           {renderEditRow()}
         </ElTable>
         <div>{renderPagination()}</div>
+        <div>{renderDialog()}</div>
       </>
     );
   },
