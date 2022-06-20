@@ -70,6 +70,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "itech-test",
+        component: () => import("@/components/iTeachTest/index.vue"),
+        meta: {
+          title: "iteach测试",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
