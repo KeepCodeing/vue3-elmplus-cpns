@@ -79,19 +79,18 @@
               >
                 <span>请选择菜单</span>
               </el-form-item>
-              <el-form-item label="菜单ID" label-width="120px"
-                ><el-select
-                  v-model="curMenuItem.menuid"
-                  placeholder="请选择菜单预设"
+              <el-form-item label="菜单ID" label-width="120px">
+                <el-radio-group
                   @change="changeMenu"
+                  v-model="curMenuItem.menuid"
                 >
-                  <el-option
+                  <el-radio
                     v-for="item in menuidList"
                     :key="item"
                     :label="item"
-                    :value="item"
-                  />
-                </el-select>
+                    >{{ item }}</el-radio
+                  >
+                </el-radio-group>
               </el-form-item>
             </el-form>
           </div>

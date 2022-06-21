@@ -78,6 +78,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "advance-form",
+        component: () => import("@/views/advance-form/index.vue"),
+        meta: {
+          title: "高级表单",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
