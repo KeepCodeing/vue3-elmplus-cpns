@@ -41,6 +41,27 @@
           </template>
         </component>
       </el-form-item>
+      <!-- action部分，这里传插槽扩展性更好 -->
+      <el-form-item>
+        <slot name="action">
+          <template v-for="item in formOption.actions" :key="item.text">
+            <el-button
+              v-if="item.reset"
+              v-bind="item.attr"
+              :type="item.type || 'default'"
+              @click="resetForm"
+              >{{ item.text || "重置" }}</el-button
+            >
+            <el-button
+              v-if="item.submit"
+              v-bind="item.attr"
+              :type="item.type || 'primary'"
+              @click="validateForm"
+              >{{ item.text || "提交" }}</el-button
+            >
+          </template>
+        </slot>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -83,7 +104,8 @@ export default {
       required: true,
     },
   },
-  setup({ formOption }) {
+  emits: ["valid-success", "valid-failed"],
+  setup({ formOption }, { emit }) {
     // 这里要对model进行深拷贝，不然双向绑定会变成操作props
     const model = ref<any>(null);
     // const tempModel: any = {};
@@ -91,14 +113,17 @@ export default {
     //   tempModel[item.prop!] = formOption.model[item.prop!];
     // }
     const formEl = ref<FormInstance>();
+    model.value = cloneDeep(formOption.model);
 
     const validateForm = () => {
       formEl.value!.validate((valid) => {
-        console.log(valid);
+        emit(valid ? "valid-success" : "valid-failed", model.value);
       });
     };
 
-    model.value = cloneDeep(formOption.model);
+    const resetForm = () => {
+      formEl.value!.resetFields();
+    };
 
     return {
       model,
@@ -108,10 +133,11 @@ export default {
       // 作用是限制可访问属性
       formEl,
       validateForm,
+      resetForm,
     };
   },
   // 限制下父组件可以访问到的属性
-  expose: ["validateForm"],
+  // expose: ["validateForm"],
 };
 </script>
 

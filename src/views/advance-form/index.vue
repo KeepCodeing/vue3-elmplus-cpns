@@ -1,7 +1,10 @@
 <template>
   <div>
-    <advance-form ref="form" :formOption="formOption" />
-    <el-button type="primary" @click="validateForm">click me</el-button>
+    <advance-form
+      @valid-success="validSuccess"
+      @valid-failed="validFailed"
+      :formOption="formOption"
+    />
   </div>
 </template>
 
@@ -19,10 +22,10 @@
 // select等组件的区别，后者是可能包括子组件的
 
 import AdvanceForm from "./components/form.vue";
-import { onMounted, reactive, ref } from "vue";
+import { reactive } from "vue";
 import { FormProp } from "./components/types";
 
-import { FormInstance } from "element-plus";
+import { ElMessage } from "element-plus";
 
 export default {
   components: {
@@ -45,7 +48,8 @@ export default {
         {
           label: "姓名",
           prop: "name",
-          required: false,
+          required: true,
+
           option: { type: "input", placeholder: "请输入姓名" },
         },
         {
@@ -61,13 +65,41 @@ export default {
           option: { type: "input", placeholder: "请输入性别" },
         },
       ],
+      actions: [{ reset: true, text: "清空" }, { submit: true }],
     });
 
-    const form = ref<any>();
+    // 这里validate的作用是用来判断表单是否通过验证的
+    // 而通过验证后一般的操作就是发请求，没通过就是提示（rules就算了，
+    // 但可能有什么特殊需求需要弹出message之类的）
+    // 那么实际上可以发现拿到form之后调用和直接传个回调
+    // 的作用是一样的，而且可以省去一些重复操作，例如获取
+    // 表单实例
 
-    const validateForm = () => form.value.validateForm();
+    // 这里再想下所谓回调，其实Vue应该是没法实现回调的，毕竟
+    // 只能用emit的形式去调用父组件方法；也就是所谓回调其实
+    // 是emit事件。接着考虑写不写成$attr形式，实际上都一样
+    // 不过后者会在子表单里多个调用
+    // const form = ref<any>();
 
-    return { formOption, form, validateForm };
+    // const validateForm = () => form.value.validateForm();
+
+    const validSuccess = (model: any) => {
+      ElMessage({
+        type: "success",
+        message: "提交成功！",
+      });
+
+      console.log(model);
+    };
+
+    const validFailed = () => {
+      ElMessage({
+        type: "warning",
+        message: "提交失败！",
+      });
+    };
+
+    return { formOption, validSuccess, validFailed };
   },
 };
 </script>

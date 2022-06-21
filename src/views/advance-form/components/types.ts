@@ -1,4 +1,4 @@
-import { FormRules } from "element-plus";
+import { FormRules, ButtonType } from "element-plus";
 
 // form-item中的组件，例如input或者select等的属性
 export interface FormItemCpn {
@@ -39,6 +39,20 @@ export interface FormItem {
   option: FormItemCpn;
 }
 
+export interface ActionButtonProp {
+  type?: ButtonType;
+  text?: string;
+
+  // 这两个属性可以用来决定是否渲染重置和提交按钮
+  // 如果不填则不渲染，如果填了，则判断是否有其它
+  // 几个字段，如果没有，就渲染默认按钮，如果有，
+  // 就渲染自定义的属性
+  submit?: boolean;
+  reset?: boolean;
+
+  attr?: any;
+}
+
 export interface FormProp {
   // 数据源 form-item-cpn使用model[prop]来进行绑定
   model: any;
@@ -49,4 +63,6 @@ export interface FormProp {
   rules?: FormRules;
 
   item: FormItem[];
+
+  actions?: ActionButtonProp[];
 }
