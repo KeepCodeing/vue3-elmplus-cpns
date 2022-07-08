@@ -32,6 +32,9 @@ export interface FormItem {
   // labelWidth?: string | number;
   required?: boolean;
 
+  // 虽然动态绑定用不了value，但option之类的子组件还是需要的
+  value?: string;
+
   // error?: string;
   showMessage?: boolean;
   size?: "large" | "default" | "small";

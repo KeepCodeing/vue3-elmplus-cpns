@@ -24,4 +24,12 @@ export default defineConfig({
       "@": join(__dirname, "src"),
     },
   },
+  server: {
+    proxy: {
+      "/response.json": {
+        target: "http://26.169.227.41:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 });

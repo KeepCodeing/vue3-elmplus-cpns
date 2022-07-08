@@ -86,6 +86,22 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "advance-table-vue",
+        component: () => import("@/views/advance-table/index.vue"),
+        meta: {
+          title: "高级表单(Vue)",
+          icon: "i-setting",
+        },
+      },
+      {
+        path: "nest-table",
+        component: () => import("@/views/nest-table/index.vue"),
+        meta: {
+          title: "嵌套表格",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];

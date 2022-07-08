@@ -64,6 +64,19 @@ export default {
           required: true,
           option: { type: "input", placeholder: "请输入性别" },
         },
+        {
+          label: "爱好",
+          prop: "habit",
+          required: true,
+          option: {
+            type: "select",
+            children: [
+              { type: "option", label: "听歌", value: "1" },
+              { type: "option", label: "自闭", value: "2" },
+              { type: "option", label: "写代码", value: "3" },
+            ],
+          },
+        },
       ],
       actions: [{ reset: true, text: "清空" }, { submit: true }],
     });
