@@ -10,8 +10,10 @@ import "element-plus/dist/index.css";
 
 import eventBus from "./utils/eventBus";
 
+import infiniteScroll from "./directives/infinite-scroll";
+
 const app = createApp(App);
 
 for (const icon in ElIcons) app.component(format(icon), ElIcons[icon]);
 
-app.use(VueRouter).use(eventBus).mount("#app");
+app.use(VueRouter).use(eventBus).use(infiniteScroll).mount("#app");

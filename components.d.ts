@@ -30,6 +30,7 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
+    InfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
     ITeachTest: typeof import('./src/components/iTeachTest/index.vue')['default']
     Menu: typeof import('./src/components/iTeachTest/menu/index.vue')['default']
     NavHeader: typeof import('./src/components/container/components/nav-header.vue')['default']

@@ -102,6 +102,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "infinite-scroll",
+        component: () => import("@/views/infinite-scroll/index.vue"),
+        meta: {
+          title: "无限滚动",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
