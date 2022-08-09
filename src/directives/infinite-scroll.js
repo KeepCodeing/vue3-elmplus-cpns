@@ -1,6 +1,10 @@
+import { nextTick } from "vue";
+
 export default {
   install(app) {
     const isArrivedBottom = (el) => {
+      // 这种情况说明没有产生溢出，也就是没有占满
+      // if (el.clientHeight === el.scrollHeight) return false;
       // console.log(el.scrollTop, el.clientHeight, el.scrollHeight);
       return el.scrollTop + el.clientHeight >= el.scrollHeight;
     };
@@ -40,6 +44,12 @@ export default {
       }
     };
 
+    // 判断一开始是否占满应该单独独立出来...
+    // 之前写在触底里了，但实际并不能复用..
+    // 思路就是滑动高度 <= 元素高度，注意clientHeight是固定的
+    // 所以反过来永远都是满足的...
+    const isFull = (el) => el.scrollHeight > el.clientHeight;
+
     app.directive("inf-scroll", {
       mounted(el, binding) {
         if (typeof binding.value !== "function")
@@ -47,22 +57,57 @@ export default {
         // const cb = throttle(() => walk(el, binding.value));
         const cb = throttle(walk.bind(this, el, binding.value));
 
-        const { instance, modifiers } = binding;
+        // 看的教程里用的修饰符，然而修饰符应该不能直接绑变量，官方也没写修饰符
+        // 当变量的写法
+        // 当然推荐还是data-set写法，这样可以传入更多参数，只不过这里偷懒不写...
+        // 然后发现坠毁w，因为只能传一个参数所以没法保证loading时触底不加载...
+        const { arg, modifiers } = binding;
 
-        instance.cb = cb;
+        // 除了 el 外，其他参数都是只读的，不要更改它们。若你需要在不同的钩子间共享信息，
+        // 推荐通过元素的 dataset attribute 实现。
 
-        el.addEventListener("scroll", instance.cb);
+        // 官网推荐只更改el，那么就把监听函数绑到el上...
 
+        el.cb = cb;
+
+        el.addEventListener("scroll", el.cb);
+
+        // console.log(isArrivedBottom(el));
+
+        // 如何立即加载呢？实际上这块和触底是有区别的，触底在一开始就是
+        // 不满足的情况
+        // 元素没法占满父元素同样也是无法触底的情况，但前者应该等待用户操作
+        // 后者应该是程序加载
+
+        if (!isFull(el)) {
+          const timer = setInterval(async () => {
+            binding.value();
+            // 同样有因为延时导致的el属性不是最新...
+            // 如果太短会导致nextTick优化，页面还是没法更新...
+            console.log(el.clientHeight, el.scrollHeight);
+            if (isFull(el)) clearInterval(timer);
+          }, 200);
+        }
+
+        // 感觉修饰符写法只能说锦上添花，最好还是直接判断初始数据是否触底...
         if (modifiers.imitate) {
         }
       },
 
+      // 父子元素全都更新完成后调用，所以这里可以用来判断下加载是否完成
       updated(el, binding) {
-        console.log("bbb");
+        const stop = binding.arg;
+        const loading = el.getAttribute("loading");
+        if (stop) {
+          el.removeEventListener("scroll", el.cb);
+          console.log("done");
+          return;
+        }
+        if (!stop && loading) return;
       },
 
       unmounted(el, binding) {
-        el.removeEventListener("scroll", instance.cb);
+        el.removeEventListener("scroll", el.cb);
       },
     });
   },

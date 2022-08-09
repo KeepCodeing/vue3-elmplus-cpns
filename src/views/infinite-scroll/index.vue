@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-inf-scroll="loadData">
+  <div class="container" v-inf-scroll:[stop]="loadData" :loading="loading">
     <div
       class="item"
       :style="{ background: item }"
@@ -19,10 +19,23 @@ const itemList = ref(["green"]);
 const sleep = (time = 500) =>
   new Promise((reslove) => setTimeout(reslove, time));
 
+let cnt = ref(0);
+const stop = ref(false);
+const loading = ref(false);
 const loadData = async () => {
   const len = itemList.value.length;
   console.log("loadding");
+
+  cnt.value++;
+  loading.value = true;
+
   await sleep(1000);
+
+  if (cnt.value >= 13) {
+    stop.value = true;
+    return;
+  }
+  loading.value = false;
   itemList.value.push(itemColorList[len % 5]);
 };
 </script>
@@ -36,7 +49,7 @@ const loadData = async () => {
 }
 
 .item {
-  height: 1000px;
+  height: 100px;
   background: green;
   width: 100%;
 }
