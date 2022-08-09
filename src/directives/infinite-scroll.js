@@ -1,5 +1,23 @@
 import { nextTick } from "vue";
 
+// https://github.com/element-plus/element-plus/blob/dev/packages/components/infinite-scroll/src/index.ts
+
+// 流程总结：
+// 1. 首先判断什么是触底条件
+// 2. 接下来考虑指令各个声明周期大体任务
+// 2.1 mounted：绑定事件，初始化
+// 2.2 updated：元素更新判断是否停止加载
+// 2.3 unmounted：解除事件绑定
+// 3. 通过绑定事件判断是否触底，可加上节流防抖优化
+// 4. 如果触底调用回调
+// 5. 如果第一次加载数据无法填充整个容器，多次调用回调直到填满
+
+// 为什么自己写的这么粪：
+// 核心原因是没有用MutationObserver。丢掉DOM响应式在数据初始无法填满时
+// 尤其麻烦，迫真教程用的定时器，本five跟着用就导致各种DOM/数据不同步
+// 问题...另外还有个bug，也就是节流导致触底事件无法100%触发，element-plus
+// 中主要有个50ms的Obverser监听DOM改变，还有个200ms的滑动节流监听是否触底..
+
 export default {
   install(app) {
     const isArrivedBottom = (el) => {
