@@ -110,6 +110,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "virtual-list",
+        component: () => import("@/views/virtual-list/index.vue"),
+        meta: {
+          title: "虚拟列表",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
