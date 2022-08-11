@@ -118,6 +118,14 @@ export const routes = [
           icon: "i-setting",
         },
       },
+      {
+        path: "CSS-swiper",
+        component: () => import("@/views/CSS-swiper/index.vue"),
+        meta: {
+          title: "CSS轮播图",
+          icon: "i-setting",
+        },
+      },
     ],
   },
 ];
