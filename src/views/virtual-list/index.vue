@@ -10,6 +10,27 @@
     </ul>
     <div :style="{ height: `${LIST_SIZE}px` }"></div>
   </div>
+  <div style="width: 400px; height: 100px; background: red">
+    <div
+      style="
+        width: 100px;
+        height: 100%;
+        float: left;
+        overflow: hidden;
+        background: green;
+      "
+    ></div>
+    <div style="margin: 0 100px">asdf</div>
+    <div
+      style="
+        width: 100px;
+        height: 100%;
+        float: right;
+        overflow: hidden;
+        background: green;
+      "
+    ></div>
+  </div>
 </template>
 
 <script setup>

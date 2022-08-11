@@ -2,6 +2,18 @@ import { nextTick } from "vue";
 
 // https://github.com/element-plus/element-plus/blob/dev/packages/components/infinite-scroll/src/index.ts
 
+// 口述思路：
+// 无限滚动主要问题就是如何判断触底。针对父容器而言，scrollTop表示滑动出去部分的元素高度
+// clientHeight表示可见区域高度，scrollHeight表示可见区域+滑动出去部分元素的高度，那么
+// 可知scrollTop + clientHeight >= scrollHeight就说明滚动到底部了
+// 在父容器上监听滚动事件，滚动时判断是否触底，触底执行加载数据的回调，一般来说是会增加
+// 若干个列表项，这时scrollHeight变高，继续滑动触底重复这过程就完成了无限滚动。
+// 数据第一次加载可分为两种情况，能够产生溢出和不能产生溢出，能够产生溢出时我们无需额外操作
+// 不能产生溢出时需要通过多次调用回调直到产生溢出为止。
+// 如何判断是否产生溢出：使用MutationObverser当DOM变化时执行回调，如果溢出了就停止调用
+// 回调
+// 用户可以通过设置数据是否加载完毕来停止滑动监听和触底加载。
+
 // 流程总结：
 // 1. 首先判断什么是触底条件
 // 2. 接下来考虑指令各个声明周期大体任务
